@@ -1,0 +1,2522 @@
+       ////////////////////OM SHRI SAI RAM\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    ////////////////////GOVIND BAGARIA - XII - MPC \\\\\\\\\\\\\\\\\\\
+  //////////////////////RAILWAY TICKET RESERVATION\\\\\\\\\\\\\\\\\\\\\\
+///////////////////////COMPUTER SCIENCE PROJECT WORK\\\\\\\\\\\\\\\\\\\\\
+
+
+//////////////USED HEADER FILES//////////////////////////
+////////////////////////////////////////////////////////
+
+#include<fstream.h>
+#include<conio.h>
+#include<graphics.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<dos.h>
+#include<time.h>
+
+void ticket();
+
+/////////////USED GLOBAL VARIABLES///////////////////////
+////////////////////////////////////////////////////////
+
+ char f[10]="f";
+ char s[10]="s";
+ int addr,ad,flag,j,li,da,mo,ye,lp,k,l,f1,d,m,y,i,amt,no,pnr_no;
+ float tamt;
+
+//////////////////////////CLASSES USED///////////////////////////////
+////////////////////////////////////////////////////////////////////
+
+//////////////////CLASS FOR ID/////////////////////
+//////////////////////////////////////////////////
+
+   class login
+    {
+      public:
+       char id[100];
+       char pass[100];
+       char *password;
+
+	void getid()
+	 {
+	  clrscr();
+	  gotoxy(25,10);
+	  textcolor(YELLOW);
+	  cprintf("Enter your id:");
+	  gets(id);
+	  gotoxy(25,12);
+	  textcolor(14);
+	  cprintf("Enter the password:");
+	  password=getpass(" ");
+	  strcpy(pass,password);
+	 }
+
+	void displayid()
+	 {
+	  clrscr();
+	  gotoxy(25,10);
+	  textcolor(12);
+	  cprintf("Id:");
+	  puts(id);
+	  gotoxy(25,12);
+	  textcolor(12);
+	  cprintf("Password:");
+	  puts(pass);
+	  textcolor(15);
+	 }
+     };
+
+
+//////////////////////CLASS FOR TAKING & SHOWING DETAILS //////////////
+/////////////////////////////OF SCHEDULED TRAINS////////////////////////
+
+   class schedule
+     {
+
+      public:
+       int tno;
+       char tname[100];
+       char bp[100];
+       char dest[100];
+       int hrs1,min1,hrs2,min2;
+       char days[7][20];
+
+       void formlist()
+	{
+	 clrscr();
+	 gotoxy(10,3);
+	 textcolor(BLINK + MAGENTA);
+	 cprintf("Enter the details as follows");
+	 gotoxy(5,5);
+	 textcolor(9);
+	 cprintf("Train no:");
+	 cin>>tno;
+	 textcolor(9);
+	 gotoxy(5,7);
+	 cprintf("Train name:");
+	 gets(tname);
+	 gotoxy(5,9);
+	 textcolor(9);
+	 cprintf("From:");
+	 gets(bp);
+	 gotoxy(5,11);
+	 textcolor(9);
+	 cprintf("To:");
+	 gets(dest);
+	 gotoxy(5,13);
+	 textcolor(9);
+	 cprintf("Departure time:");
+	 cin>>hrs1;
+	 gotoxy(26,13);
+	 textcolor(15);
+	 cprintf(" : ");
+	 cin>>min1;
+	 gotoxy(5,15);
+	 textcolor(9);
+	 cprintf("Arrival time:");
+	 cin>>hrs2;
+	 gotoxy(23,15);
+	 textcolor(15);
+	 cprintf(" : ");
+	 cin>>min2;
+	 gotoxy(5,17);
+	 textcolor(9);
+	 cprintf("number of Days of journey per week:");
+	 cin>>no;
+	 gotoxy(5,18);
+	 textcolor(9);
+	 int p;
+	 cprintf("enter days of journey : ");
+	 for(i=0,p=19;i<no;i++,p++)
+	  {
+	   gets(days[no]);
+	   gotoxy(26,p);
+	   cprintf("  ");
+	  }
+	}
+
+       void showlist()
+	{
+	 clrscr();
+	 gotoxy(5,6);
+	 textcolor(9);
+	 cprintf("Train no:");
+	 cout<<tno;
+	 gotoxy(5,8);
+	 cprintf("Train name:");
+	 puts(tname);
+	 gotoxy(5,10);
+	 textcolor(9);
+	 cprintf("From:");
+	 puts(bp);
+	 gotoxy(5,12);
+	 textcolor(9);
+	 cprintf("To:");
+	 puts(dest);
+	 gotoxy(5,14);
+	 textcolor(9);
+	 cprintf("Departure time:");
+	 cout<<hrs1<<":"<<min1;
+	 gotoxy(5,16);
+	 textcolor(9);
+	 cprintf("Arrival time:");
+	 cout<<hrs2<<":"<<min2;
+	 gotoxy(5,18);
+	 textcolor(9);
+	 int p;
+	 cprintf("Days of journey : ");
+	 for(i=0,p=19;i<=no;i++,p++)
+	  {
+	   puts(days[no]);
+	   gotoxy(28,p);
+	   cprintf("  ");
+	  }
+	 getch();
+	 clrscr();
+	}
+      };
+
+////////////CLASS FOR GETTING DETAILS///////////////////////
+////////////////////OF TRAINS//////////////////////////////
+
+   class detail:public schedule
+     {
+
+      public:
+	int c1,c1fare;
+	int c2,c2fare;
+	int d,m,y;
+
+	void getdetail()
+	  {
+	   schedule s;
+	   clrscr();
+	   gotoxy(10,4);
+	   textcolor(BLINK + MAGENTA);
+	   cprintf("Enter the details as follows");
+	   gotoxy(5,6);
+	   textcolor(10);
+	   cprintf("Train no:");
+	   cin>>tno;
+	   gotoxy(5,8);
+	   textcolor(10);
+	   cprintf("Train name:");
+	   gets(tname);
+	   gotoxy(5,10);
+	   textcolor(10);
+	   cprintf("Boarding point:");
+	   gets(bp);
+	   gotoxy(5,12);
+	   textcolor(10);
+	   cprintf("Destination pt:");
+	   gets(dest);
+	   gotoxy(5,14);
+	   textcolor(10);
+	   cprintf("No of seats in first class & fare per ticket:");
+	   cin>>c1;
+	   gotoxy(54,14);
+	   textcolor(10);
+	   cprintf(" ");
+	   cin>>c1fare;
+	   gotoxy(5,16);
+	   textcolor(10);
+	   cprintf("No of seats in second class & fare per ticket:");
+	   cin>>c2;
+	   gotoxy(54,16);
+	   cprintf(" ");
+	   cin>>c2fare;
+	   gotoxy(5,18);
+	   textcolor(10);
+	   cprintf("timing of departure: ");
+	   cin>>hrs1;
+	   gotoxy(29,18);
+	   textcolor(15);
+	   cprintf(" : ");
+	   cin>>min1;
+	   gotoxy(5,20);
+	   textcolor(10);
+	   cprintf("timing of arrival: ");
+	   cin>>hrs2;
+	   gotoxy(29,20);
+	   textcolor(15);
+	   cprintf(" : ");
+	   cin>>min2;
+	   getch();
+	  }
+
+	void displaydetail()
+	  {
+	    gotoxy(5,6);
+	    textcolor(10);
+	    cprintf("Train no:");
+	    cout<<tno;
+	    gotoxy(5,8);
+	    textcolor(10);
+	    cprintf("Train name:");
+	    puts(tname);
+	    gotoxy(5,10);
+	    textcolor(10);
+	    cprintf("Boarding point:");
+	    puts(bp);
+	    gotoxy(5,12);
+	    textcolor(10);
+	    cprintf("destination : ");
+	    puts(dest);
+	    gotoxy(5,14);
+	    textcolor(10);
+	    cprintf("No of seats in first class & fare per ticket:");
+	    cout<<c1;
+	    gotoxy(54,14);
+	    textcolor(10);
+	    cprintf(" ");
+	    cout<<c1fare;
+	    gotoxy(5,16);
+	    textcolor(10);
+	    cprintf("No of seats in second class & fare per ticket:");
+	    cout<<c2;
+	    gotoxy(54,16);
+	    cprintf(" ");
+	    cout<<c2fare;
+	    gotoxy(5,18);
+	    textcolor(10);
+	    cprintf("timing of departure: ");
+	    cout<<hrs1;
+	    gotoxy(29,18);
+	    textcolor(15);
+	    cprintf(" : ");
+	    cout<<min1;
+	    gotoxy(5,20);
+	    textcolor(10);
+	    cprintf("timing of arrival: ");
+	    cout<<hrs2;
+	    gotoxy(29,20);
+	    textcolor(15);
+	    cprintf(" : ");
+	    cout<<min2;
+	    getch();
+	    clrscr();
+	  }
+     };
+
+
+////////////////////CLASS FOR GETTING RESERVATION/////////////////////////
+////////////////////////////////DETAILS//////////////////////////////////
+
+   class reser:public detail
+     {
+
+      public:
+	int pnr;
+	char pname[10][100],day[15];
+	int age[15];
+	char clas[10];
+	char sex[10][10];
+	int nosr;
+	int adu;
+	int child;
+	int i;
+	int con;
+	int berth[10];
+	int coach[10];
+	int tin;
+	float amc;
+
+	void getresdet()
+	 {
+	  clrscr();
+	  gotoxy(10,3);
+	  textcolor(BLINK + MAGENTA);
+	  cprintf("Enter the details as follows");
+	  gotoxy(5,5);
+	  textcolor(14);
+	  cprintf("Train no:");
+	  cin>>tno;
+	  gotoxy(5,6);
+	  textcolor(14);
+	  cprintf("Train name:");
+	  gets(tname);
+	  gotoxy(5,7);
+	  textcolor(14);
+	  cprintf("Boarding point:");
+	  gets(bp);
+	  gotoxy(5,8);
+	  textcolor(14);
+	  cprintf("Destination pt:");
+	  gets(dest);
+	  gotoxy(5,9);
+	  textcolor(14);
+	  cprintf("No. of adults:");
+	  cin>>adu;
+	  gotoxy(5,10);
+	  textcolor(14);
+	  cprintf("No. of children:");
+	  cin>>child;
+	  gotoxy(5,11);
+	  textcolor(14);
+	  cprintf("No of seats required:");
+	  cin>>nosr;
+	  gotoxy(7,12);
+	  textcolor(RED);
+	  cprintf("choose from the given concession category when asked");
+	  gotoxy(10,13);
+	  textcolor(12);
+	  cprintf("1.Military");
+	  gotoxy(10,14);
+	  textcolor(12);
+	  cprintf("2.Senior citizen");
+	  gotoxy(10,15);
+	  textcolor(12);
+	  cprintf("3.Children below 5 yrs");
+	  gotoxy(10,16);
+	  textcolor(12);
+	  cprintf("4.None");
+	  int j;
+	  for(i=0,j=17;i<nosr;i++)
+	    {
+	     gotoxy(5,i+j);
+	     textcolor(14);
+	     cprintf("Passenger name:");
+	     gets(pname[i]);
+	     gotoxy(5,i + ++j);
+	     textcolor(14);
+	     cprintf("Passenger age:");
+	     cin>>age[i];
+	     gotoxy(5,i + ++j);
+	     textcolor(14);
+	     cprintf("Passenger sex:");
+	     gets(sex[i]);
+	     gotoxy(5,i + ++j);
+	     textcolor(14);
+	     cprintf("Enter the concession category:");
+	     cin>>con;
+
+	    }
+
+	  clrscr();
+	  gotoxy(5,7);
+	  textcolor(14);
+	  cprintf("Enter the class f-first class s-second class:");
+	  gets(clas);
+	  gotoxy(5,8);
+	  textcolor(14);
+	  cprintf("Date of travel:");
+	  gotoxy(22,8);
+	  textcolor(14);
+	  cin>>d;
+	  gotoxy(26,8);
+	  textcolor(14);
+	  cin>>m;
+	  gotoxy(30,8);
+	  textcolor(14);
+	  cin>>y;
+	  gotoxy(5,9);
+	  textcolor(14);
+	  cprintf("Day of travel:");
+	  gets(day);
+	  gotoxy(5,11);
+	  textcolor(RED + BLINK);
+	  cprintf("............END OF GETTING DETAILS............");
+	  textcolor(15);
+	  getch();
+	 }
+
+	void displayresdet()
+	 {
+	  int gd=DETECT,gm;
+	  initgraph(& gd,& gm,"C:\\TC\\BGI");
+	  cleardevice();
+	  ticket();
+
+	  char *z;
+
+	  z=new char;
+	  sprintf(z,"%d",pnr);
+	  setcolor(15);
+	  outtextxy(159,188,z);
+
+	  z=new char;
+	  sprintf(z,"%d",tno);
+	  setcolor(15);
+	  outtextxy(230,188,z);
+
+	  z=new char;
+	  sprintf(z,"%d",d);
+	  setcolor(15);
+	  outtextxy(295,188,z);
+
+	  z=new char;
+	  sprintf(z,"%d",m);
+	  setcolor(15);
+	  outtextxy(320,188,z);
+
+	  z=new char;
+	  sprintf(z,"%d",y);
+	  setcolor(15);
+	  outtextxy(345,188,z);
+
+	  z=new char;
+	  sprintf(z,"%d",adu);
+	  setcolor(15);
+	  outtextxy(390,188,z);
+
+	  z=new char;
+	  sprintf(z,"%d",child);
+	  setcolor(15);
+	  outtextxy(440,188,z);
+
+	  z=new char;
+	  sprintf(z,"%d",tin);
+	  setcolor(15);
+	  outtextxy(380,314,z);
+
+	  z=new char;
+	  sprintf(z,"%d",da);
+	  setcolor(15);
+	  outtextxy(420,280,z);
+
+	  z=new char;
+	  sprintf(z,"%d",mo);
+	  setcolor(15);
+	  outtextxy(440,280,z);
+
+	  z=new char;
+	  sprintf(z,"%d",ye);
+	  setcolor(15);
+	  outtextxy(460,280,z);
+
+	  int p;
+	  for(i=0,p=251;i<nosr;i++,p+=10)
+	   {
+	    berth[i]=random(1-73);
+	    coach[i]=random(1-13);
+
+	    z=new char;
+	    sprintf(z,"%d",age[i]);
+	    setcolor(15);
+	    outtextxy(284,p,z);
+
+	    z=new char;
+	    sprintf(z,"%d",berth[i]);
+	    setcolor(15);
+	    outtextxy(211,p,z);
+
+	    z=new char;
+	    sprintf(z,"%d",coach[i]);
+	    setcolor(15);
+	    outtextxy(164,p,z);
+	    textcolor(15);
+	    outtextxy(157,p,"s");
+
+	    z=new char;
+	    sprintf(z,"%d",con);
+	    setcolor(15);
+	    outtextxy(336,p,z);
+
+	    z=new char;
+	    sprintf(z,"%f",amc);
+	    setcolor(15);
+	    outtextxy(432,p,z);
+
+	    setcolor(15);
+	    outtextxy(244,p,sex[i]);
+	   }
+
+
+	  setcolor(15);
+	  outtextxy(160,218,clas);
+
+	  setcolor(15);
+	  outtextxy(216,216,bp);
+
+	  setcolor(15);
+	  outtextxy(300,216,dest);
+
+	  setcolor(15);
+	  outtextxy(298,298,tname);
+
+	  getch();
+	  delete z;
+	  closegraph();
+
+	}
+     };
+
+//////////////////////////CLASS FOR CANCELLING///////////////////////////
+////////////////////////////////TICKET//////////////////////////////////
+
+    class canc:public reser
+     {
+
+       public:
+	int nosc;
+	float amr;
+
+	void getcancdet()
+	 {
+	  gotoxy(10,8);
+	  textcolor(BLINK + MAGENTA);
+	  cprintf("Enter the details as follows");
+	  gotoxy(5,10);
+	  textcolor(6);
+	  cprintf("Enter the pnr no.");
+	  cin>>pnr;
+	  gotoxy(5,12);
+	  textcolor(14);
+	  cprintf("Date of cancellation:");
+	  gotoxy(26,12);
+	  textcolor(14);
+	  cin>>d;
+	  gotoxy(29,12);
+	  textcolor(14);
+	  cin>>m;
+	  gotoxy(32,12);
+	  textcolor(14);
+	  cin>>y;
+	  gotoxy(10,15);
+	  textcolor(RED + BLINK);
+	  cprintf("............END OF GETTING DETAILS............");
+	  textcolor(15);
+	  getch();
+
+	 }
+
+	void displaycancdet()
+	 {
+	  clrscr();
+	  for(i=5;i<70;i++)
+	   {
+	    textcolor(RED);
+	    gotoxy(i,5);
+	    cprintf(".");
+	    delay(70);
+	   }
+
+
+	   for(i=5;i<70;i++)
+	    {
+	     textcolor(12);
+	     gotoxy(i,6);
+	     cprintf(".");
+	     delay(70);
+	    }
+	  gotoxy(7,8);
+	  textcolor(11);
+	  cprintf("Pnr no:");
+	  cout<<pnr;
+
+	  gotoxy(7,9);
+	  textcolor(11);
+	  cprintf("Train no:");
+	  cout<<tno;
+
+	  gotoxy(7,10);
+	  textcolor(11);
+	  cprintf("Train name:");
+	  puts(tname);
+
+	  gotoxy(7,11);
+	  textcolor(11);
+	  cprintf("Boarding point:");
+	  puts(bp);
+
+	  gotoxy(7,12);
+	  textcolor(11);
+	  cprintf("Destination pt:");
+	  puts(dest);
+
+	  gotoxy(7,13);
+	  textcolor(11);
+	  cprintf("Your class:");
+	  puts(clas);
+
+	  gotoxy(7,14);
+	  textcolor(11);
+	  cprintf("no of seats to be cancelled:");
+	  cout<<nosc;
+
+	  int p;
+	  for(i=0,p=15;i<nosc;i++)
+	   {
+	    gotoxy(7,++p);
+	    textcolor(11);
+	    cprintf("Passenger name:");
+	    puts(pname[i]);
+
+	    gotoxy(7,++p);
+	    textcolor(11);
+	    cprintf("passenger's age:");
+	    cout<<age[i];
+
+	    gotoxy(7,++p);
+	    textcolor(11);
+	    cprintf("passenger's sex:");
+	    puts(sex[i]);
+
+	   }
+	  getch();
+	  clrscr();
+	  gotoxy(7,10);
+	  textcolor(11);
+	  cprintf("Date of cancellation:");
+	  gotoxy(30,10);
+	  textcolor(15);
+	  cout<<d;
+
+	  gotoxy(33,10);
+	  textcolor(15);
+	  cout<<m;
+
+	  gotoxy(35,10);
+	  textcolor(15);
+	  cout<<y;
+
+	  gotoxy(7,12);
+	  textcolor(11);
+	  cprintf("You can collect:");
+	  textcolor(15);
+	  cout<<amr<<"rs"<<endl;
+
+	  for(i=5;i<70;i++)
+	   {
+	    gotoxy(i,15);
+	    textcolor(GREEN);
+	    cprintf("*");
+	    delay(70);
+	   }
+
+	   for(i=10;i<30;i++)
+	   {
+	    gotoxy(i,17);
+	    textcolor(GREEN);
+	    cprintf(".");
+	    delay(70);
+	   }
+
+	    gotoxy(31,17);
+	    textcolor(LIGHTGREEN + BLINK);
+	    cprintf("END OF CANCELLATION");
+
+	    for(i=50;i<60;i++)
+	     {
+	      gotoxy(i,17);
+	      textcolor(GREEN);
+	      cprintf(".");
+	      delay(70);
+	     }
+
+	   for(i=5;i<70;i++)
+	    {
+	     gotoxy(i,19);
+	     textcolor(GREEN);
+	     cprintf("*");
+	     delay(70);
+	    }
+	  getch();
+
+	 }
+
+     };
+
+/////////////////FUNCTIONS USED/////////////////////////////////
+///////////////////////////////////////////////////////////////
+    //function for coverpage
+    void coverpage();
+
+    //function for welcome
+    void welcome();
+
+    //function for matrix
+    void matrix();
+
+    //function for calling manage menu
+    void manage();
+
+    //function for calling cancellation menu
+    void can();
+
+    //function for calling user management
+    void user();
+
+    //function calling database
+    void database();
+
+    //function for calling reservation menu
+    void res();
+
+    ////function for calling reservation details
+    void reserve();
+
+    //function for showing passenger details
+    void displaypassdetail();
+
+    //function for showing train details
+    void displaytraindetails();
+
+    //function for calling cancellation menu
+    void cancell();
+
+    //function for enquiring
+    void enquiry();
+
+    //function for tatkal reservation
+    void tatkal();
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//\/\/\/\/\/\/\/\/\/\/\/\/\/starting of the main\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    void main()
+     {
+      int gd=DETECT,gm;
+      initgraph(&gd,&gm,"C:\\TC\\BGI");
+
+      coverpage();
+
+      welcome();
+
+      matrix();
+
+      clrscr();
+
+      int ch;
+
+      for(li=10;li<71;li++)
+       {
+	gotoxy(li,3);
+	textcolor(1);
+	delay(30);
+	cprintf("\/");
+       }
+
+      for(li=70;li>=10;li--)
+       {
+	gotoxy(li,6);
+	textcolor(1);
+	delay(30);
+	cprintf("\\");
+       }
+
+      for(lp=4;lp<6;lp++)
+       {
+	gotoxy(10,lp);
+	textcolor(1);
+	delay(100);
+	cprintf("-");
+       }
+
+      for(lp=5;lp>=4;lp--)
+       {
+	gotoxy(70,lp);
+	textcolor(1);
+	delay(100);
+	cprintf("-");
+       }
+
+      gotoxy(15,4);
+      textcolor(BLINK + MAGENTA);
+      cprintf("Welcome To Indian Railway Reservation System");
+
+      gotoxy(15,5);
+      cprintf("Designed and Coded By GOVIND BAGARIA");
+
+      gotoxy(25,10);
+      textcolor(LIGHTGREEN);
+      cprintf("Coded By:");
+
+      gotoxy(25,11);
+      textcolor(2);
+      cprintf("Govind Bagaria");
+
+      gotoxy(25,12);
+      textcolor(3);
+      cprintf("class: Xll");
+
+      textcolor(4);
+      gotoxy(25,13);
+      cprintf("sri satya sai higher");
+
+      textcolor(4);
+      gotoxy(25,14);
+      cprintf("secondary school");
+
+      textcolor(5);
+      gotoxy(25,15);
+      textcolor(6);
+      cprintf("roll no. :4653845");
+
+      gotoxy(30,20);
+      textcolor(WHITE);
+      cprintf("Press Any Key To ..........Continue");
+
+      getch();
+
+      clrscr();
+
+	do
+	 {
+	  gotoxy(10,10);
+	  textcolor(BLINK + GREEN);
+	  cprintf ("^^^^^^^^^^^^^^^^^^^^^^MAIN MENU^^^^^^^^^^^^^^^^^^^^");
+
+	  textcolor(9);
+	  cout<<"\n";
+	  gotoxy(20,15);
+	  cprintf("1:Administrator Mode");
+
+	  textcolor(12);
+	  gotoxy(20,17);
+	  cprintf("2:User Mode");
+
+	  textcolor(13);
+	  gotoxy(20,19);
+	  cprintf("3:Exit");
+
+	  textcolor(WHITE);
+	  gotoxy(20,23);
+	  cprintf("enter your choice: ");
+	  cin>>ch;
+	  cout<<endl;
+
+	  switch(ch)
+	   {
+	    case 1:
+	    database();
+	    break;
+
+	    case 2:
+	    user();
+	    break;
+
+	    case 3:
+	    {
+	     int gd=DETECT,gm,i=0;
+	     initgraph(& gd,& gm,"C:\\TC\\BGI");
+
+	     cleardevice();
+
+	     for(i=20,j=0,k=10,l=0;j<480;j++,l++)
+	      {
+		putpixel(i,j,9);
+		delay(1);
+		putpixel(k,l,10);
+		delay(1);
+	      }
+
+	     for(i=620,j=0,k=630,l=0;j<480;j++,l++)
+	      {
+		putpixel(i,j,9);
+		delay(1);
+		putpixel(k,l,10);
+		delay(1);
+	      }
+
+	     for(i=0,j=10,k=0,l=20;i<640;i++,k++)
+	      {
+		putpixel(i,j,9);
+		delay(1);
+		putpixel(k,l,10);
+		delay(1);
+	      }
+
+	     for(i=0,j=460,k=0,l=470;i<640;i++,k++)
+	      {
+		putpixel(i,j,9);
+		delay(1);
+		putpixel(k,l,10);
+		delay(1);
+	      }
+
+	     while(1)
+	      {
+		setcolor(i);
+		circle(200,220,75);
+		circle(200,220,50);
+		circle(194,219,15);
+		circle(194,219,10);
+		circle(193,204,3);
+
+		line(178,210,178,240);
+		line(178,240,210,240);
+		line(210,240,210,216);
+		line(185,206,178,210);
+		line(178,210,150,255);
+		line(178,240,178,252);
+
+		line(210,240,210,252);
+
+		line(210,252,194,267);
+		line(178,252,194,267);
+
+		line(178,252,149,256);
+
+		line(178,252,178,265);
+		line(178,265,149,257);
+
+		circle(205,236,2);
+		circle(182,236,2);
+		rectangle(167,236,170,239);
+
+		rectangle(162,246,165,249);
+
+		arc(193,200,335,70,5);
+		arc(189,200,340,90,2);
+		line(195,195,162,187);
+		line(189,198,162,187);
+
+		circle(184,248,1);
+		circle(192,246,1);
+		circle(204,246,1);
+		circle(184,252,1);
+		circle(194,253,1);
+		circle(203,252,1);
+		circle(188,258,1);
+		circle(196,258,1);
+		circle(198,263,1);
+		setcolor(9);
+		outtextxy(134,225,"I");
+		delay(10);
+		outtextxy(138,206,"N");
+		delay(10);
+		outtextxy(144,187,"D");
+		delay(10);
+		outtextxy(154,174,"I");
+		delay(10);
+		outtextxy(164,164,"A");
+		delay(10);
+		outtextxy(177,160,"N");
+
+		delay(10);
+		outtextxy(211,158,"R");
+		delay(10);
+		outtextxy(224,163,"A");
+		delay(10);
+		outtextxy(238,172,"I");
+		delay(10);
+		outtextxy(249,185,"L");
+		delay(10);
+		outtextxy(257,202,"W");
+		delay(10);
+		outtextxy(259,216,"A");
+		delay(10);
+		outtextxy(256,230,"Y");
+		delay(10);
+		outtextxy(254,244,"S");
+
+		delay(5);
+		++i;
+
+		if(kbhit())
+		break;
+	      }
+
+	     getch();
+
+	     setcolor(1);
+	     rectangle(80,120,520,320);
+	     delay(300);
+
+	     setcolor(GREEN);
+	     rectangle(78,118,522,322);
+	     delay(300);
+
+	     line(277,217,517,217);
+	     setcolor(YELLOW);
+	     delay(300);
+
+	     line(277,219,517,219);
+	     setcolor(RED);
+	     settextstyle(4,0,3);
+	     outtextxy(281,183,"INDIAN RAILWAYS");
+
+	     setcolor(15);
+	     settextstyle(1,0,3);
+	     outtextxy(281,231,"serving customers");
+
+	     outtextxy(281,251,"   with a smile");
+
+	     getch();
+
+	     closegraph();
+
+	     exit(0);
+	    }
+	  }
+	 }while(ch<=3);
+      getch();
+     }
+
+//////////////////////////COVERPAGE FUNCTION//////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+
+    void coverpage()
+     {
+      int x=0,y=0,l,i,j;
+
+      char f,a;
+      long z;
+      char str[140][317];
+
+      fstream fin("dedi.txt",ios::in);randomize();
+
+      cleardevice();
+
+      setbkcolor(0);
+
+      for(i=0;i<140;i++)
+       for(j=0;j<317;j++)
+	{
+	 fin>>f;
+	 str[i][j]=f;
+	}
+	 sleep(2);
+       for(z=0;z<89000;z++)
+	{
+	 y=random(140);
+	 x=random(317);
+	 a=str[y][x];
+	 if((a=='9')||(a=='2')||(a=='4')||(a=='5'))
+	  {
+	   l=a;
+	   putpixel(x+150,y+150,l);
+	   if(z<60000)
+	   delay(1);
+	  }
+	}
+
+       x=150;
+
+       y=150;
+
+       fstream fin2("dedi.txt",ios::in);
+
+       while(!fin2.eof())
+	{
+	 fin2>>f;
+	 l=f;
+	 putpixel(x,y,l);
+	 x++;
+	 if(x==467)
+	  {
+	   x=150;
+	   y++;
+	  }
+	}
+
+       fin.close();
+
+      setbkcolor( BLACK ) ;
+      settextjustify( CENTER_TEXT, CENTER_TEXT ) ;
+      settextstyle( 0, HORIZ_DIR, 100 ) ;
+      setcolor( WHITE ) ;
+
+      for( i = 120, j = 510 ; i>101 ; i--, j++ )
+       {
+	setfillstyle( 1, WHITE ) ;
+	bar( i, 350, i+208, 400 ) ;
+	bar( j-208, 350, j, 400 ) ;
+	delay( 20 ) ;
+	setfillstyle( 1, BLACK ) ;
+	bar( i, 350, i+208, 400 ) ;
+	bar( j-208, 350, j, 400 ) ;
+       }
+
+      int t,s;
+
+      setfillstyle( 1 , WHITE ) ;
+      bar( i, 350, i+208, 400 ) ;
+      bar( j-208, 350, j, 400 ) ;
+
+      x=i;
+
+      int m,n;
+
+      x=100;
+
+     for( z = 0 ; z<8 ; z++, x+=26 )
+      {
+       for( s = x,t = x + 26 ; s<( x + 14 ) ; s++, t-- )
+	{
+	 setfillstyle( 1, RED ) ;
+	 bar( x, 350, s, 400 ) ;
+	 bar( t, 350, x+26, 400 ) ;
+	 delay( 20 ) ;
+	}
+
+       line( s, 350, s, 400 ) ;
+       for( m = s, n = s + 1 ; m > s-14 ; m--, n++ )
+	{
+	 setfillstyle( 1, WHITE ) ;
+	 bar( m, 350, s, 400 ) ;
+	 bar( s, 350, n, 400 ) ;
+	 delay( 20 ) ;
+	}
+
+       setcolor( BLUE ) ;
+       settextstyle( 1, 0, 3 ) ;
+
+       switch(z)
+	{
+	 case 0:  outtextxy( s - 5, 370 , "C");
+	     break;
+	 case 1:  outtextxy( s - 5, 370 , "O");
+	     break;
+	 case 2:  outtextxy( s - 5, 370 , "M");
+	     break;
+	 case 3:  outtextxy( s - 5, 370 , "P");
+	     break;
+	 case 4:  outtextxy( s - 5, 370 , "U");
+	     break;
+	 case 5:  outtextxy( s - 5, 370 , "T");
+	     break;
+	 case 6:  outtextxy( s - 5, 370 , "E");
+	     break;
+	 case 7:  outtextxy( s - 5, 370 , "R");
+	     break;
+
+	}
+
+      }
+
+     x = x + 26 ;
+     for( z = 0 ; z<7 ; z++, x+=26 )
+      {
+       for( s = x,t = x + 26 ; s<(x + 14) ; s++, t-- )
+	{
+	 setfillstyle( 1, RED ) ;
+	 bar( x, 350, s, 400 ) ;
+	 bar( t, 350, x+26, 400 ) ;
+	 delay( 20 ) ;
+	}
+
+       for(m = s, n = s ; m > (s - 14); m--, n++ )
+	{
+	 setfillstyle( 1, WHITE ) ;
+	 bar( m, 350, s, 400 ) ;
+	 bar( s, 350, n, 400 ) ;
+	 delay( 20 ) ;
+	}
+       switch(z)
+	{
+	 case 0:  outtextxy( s - 5, 370 , "P");
+	    break;
+	 case 1:  outtextxy( s - 5, 370 , "R");
+	    break;
+	 case 2:  outtextxy( s - 5, 370 , "O");
+	    break;
+	 case 3:  outtextxy( s - 5, 370 , "J");
+	    break;
+	 case 4:  outtextxy( s - 5, 370 , "E");
+	    break;
+	 case 5:  outtextxy( s - 5, 370 , "C");
+	    break;
+	 case 6:  outtextxy( s - 5, 370 , "T");
+	    break;
+
+	}
+      }
+      setcolor(YELLOW);
+      for(int x2=0;x2<=800;++x2)
+	 {
+	  circle(0,479,x2);
+	  delay(1);
+	 }
+      setcolor(13);
+      for(x2=0;x2<=800;++x2)
+	 {
+	  circle(639,479,x2);
+	  delay(1);
+	 }
+       setcolor(12);
+      for(x2=0;x2<=800;++x2)
+	 {
+	  circle(639,0,x2);
+	  delay(1);
+	 }
+	setcolor(0);
+      for(x2=0;x2<=800;++x2)
+	 {
+	  circle(0,0,x2);
+	  delay(1);
+	 }
+	sleep(1);
+    }
+
+///////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
+   void welcome()
+    {
+      cleardevice();
+      int x,y,i;
+      do
+      {
+       settextstyle(4,0,5);
+       for(int x=228,i=0,y=0;y<=200;x++,y++,i++)
+	{
+	 setcolor(i);
+	 circle(x+70,y,y);
+	 outtextxy(x,y,"WELCOME");
+	 setcolor(0);
+	 circle(x+70,y,y);
+	 outtextxy(x,y,"WELCOME");
+	}
+       for(x=425,i=0,y=200;y<=415;x--,y++,i++)
+	{
+	 setcolor(i);
+	 outtextxy(x,y,"WELCOME");
+	 circle(x+70,y,y);
+	 setcolor(0);
+	 circle(x+70,y,y);
+	 outtextxy(x,y,"WELCOME");
+	}
+       for(x=210,i++,y=415;x>0;x--,y--,i++)
+	{
+	 setcolor(i);
+	 outtextxy(x,y,"WELCOME");
+	 circle(x+70,y,y);
+	 setcolor(0);
+	 circle(x+70,y,y);
+	 outtextxy(x,y,"WELCOME");
+	}
+       for(x=0,y=205,i=0;x<=225;x++,y--,i++)
+	{
+	 setcolor(i);
+	 if(y==0)
+	 y=1;
+	 outtextxy(x,y,"WELCOME");
+	 circle(x+70,y,y);
+	 setcolor(0);
+	 circle(x+70,y,y);
+	 outtextxy(x,y,"WELCOME");
+	}
+       } while(!kbhit());
+
+      for(i=400;i>0;i--)
+       {
+	delay(2);
+	setcolor(BLUE);
+	circle(320,240,i);
+       }
+       getch();
+      }
+
+
+///////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
+ void matrix()
+   {
+    setbkcolor(BLACK);
+    setcolor(LIGHTGREEN);
+
+    int m,n,i,j,k;
+
+    for(m=0,k=0;m<=3;m++,k++)
+     if(m%2==0 || m==0)
+      {
+       for(i=10;i<=640;i+=10,k++)
+
+	for(j=10;j<=480;j+=10,k++)
+
+	  {
+	    delay(1);
+	    if(k%2==0 ||k==0)
+
+	     {
+	      setcolor(BLACK);
+	      settextjustify(1,1);
+	      settextstyle(SMALL_FONT,HORIZ_DIR,4);
+	      outtextxy(i,j,"1");
+	      setcolor(LIGHTGREEN);
+	      settextjustify(1,1);
+	      settextstyle(SMALL_FONT,HORIZ_DIR,4);
+	      outtextxy(i,j,"0");
+	     }
+
+	    else
+	     {
+	      setcolor(BLACK);
+	      settextjustify(1,1);
+	      settextstyle(SMALL_FONT,HORIZ_DIR,4);
+	      outtextxy(i,j,"1");
+
+	      setcolor(LIGHTGREEN);
+	      settextjustify(1,1);
+	      settextstyle(SMALL_FONT,HORIZ_DIR,4);
+	      outtextxy(i,j,"0");
+	     }
+	 }
+     }
+
+       else
+	{
+	 for(i=10;i<=640;i+=10,k++)
+
+	   for(j=10;j<=480;j+=10,k++)
+	    {
+	      if(k%2==0 ||k==0)
+	       {
+		setcolor(BLACK);
+		settextjustify(1,1);
+		settextstyle(SMALL_FONT,HORIZ_DIR,4);
+		outtextxy(i,j,"1");
+
+		setcolor(LIGHTGREEN);
+		settextjustify(1,1);
+		settextstyle(SMALL_FONT,HORIZ_DIR,4);
+		outtextxy(i,j,"0");
+	       }
+
+	      else
+	       {
+		 setcolor(BLACK);
+		 settextjustify(1,1);
+		 settextstyle(SMALL_FONT,HORIZ_DIR,4);
+		 outtextxy(i,j,"0");
+
+		 setcolor(LIGHTGREEN);
+		 settextjustify(1,1);
+		 settextstyle(SMALL_FONT,HORIZ_DIR,4);
+		 outtextxy(i,j,"1");
+	       }
+	   }
+	}
+
+
+    for(m=0,k=0;m<=3;m++,k++)
+      if(m%2==0 || m==0)
+	{
+	 for(i=640;i>=10;i-=10,k++)
+
+	   for(j=480;j>=10;j-=10,k++)
+
+	    {
+	      delay(1);
+	      if(k%2==0 ||k==0)
+
+	       {
+		 setcolor(BLACK);
+		 settextjustify(1,1);
+		 settextstyle(SMALL_FONT,HORIZ_DIR,4);
+		 outtextxy(i,j,"0");
+
+		 setcolor(LIGHTGREEN);
+		 settextjustify(1,1);
+		 settextstyle(SMALL_FONT,HORIZ_DIR,4);
+		 outtextxy(i,j,"1");
+	       }
+
+	    else
+	     {
+	      setcolor(BLACK);
+	      settextjustify(1,1);
+	      settextstyle(SMALL_FONT,HORIZ_DIR,4);
+	      outtextxy(i,j,"0");
+
+	      setcolor(LIGHTGREEN);
+	      settextjustify(1,1);
+	      settextstyle(SMALL_FONT,HORIZ_DIR,4);
+	      outtextxy(i,j,"1");
+	     }
+	 }
+     }
+
+      else
+
+       {
+	 for(i=640;i>=10;i-=10,k++)
+
+	   for(j=480;j>=10;j-=10,k++)
+	    {
+
+	      if(k%2==0 ||k==0)
+	       {
+		 setcolor(BLACK);
+		 settextjustify(1,1);
+		 settextstyle(SMALL_FONT,HORIZ_DIR,4);
+		 outtextxy(i,j,"0");
+
+		 setcolor(LIGHTGREEN);
+		 settextjustify(1,1);
+		 settextstyle(SMALL_FONT,HORIZ_DIR,4);
+		 outtextxy(i,j,"1");
+	       }
+
+	   else
+	    {
+	      setcolor(BLACK);
+	      settextjustify(1,1);
+	      settextstyle(SMALL_FONT,HORIZ_DIR,4);
+	      outtextxy(i,j,"1");
+
+	      setcolor(LIGHTGREEN);
+	      settextjustify(1,1);
+	      settextstyle(SMALL_FONT,HORIZ_DIR,4);
+	      outtextxy(i,j,"0");
+	    }
+	}
+    }
+       closegraph();
+       gotoxy(30,20);
+       textcolor(WHITE);
+       cprintf("Press Any Key To ..........Continue");
+       getch();
+
+}
+
+
+////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+
+    void database()
+     {
+      clrscr();
+      char *password;
+      char *pass="12345678";
+      gotoxy(5,10);
+      textcolor(9);
+      cprintf("Enter the administrator password:");
+      password=getpass(" ");        //the password is 82949690
+      schedule s;
+      detail a;
+      fstream f;
+      int ch;
+      char c;
+      if(strcmp(pass,password)!=0)
+       {
+	gotoxy(3,10);
+	textcolor(GREEN);
+	cprintf("Enter the password correctly ");
+	gotoxy(3,12);
+	textcolor(GREEN);
+	cprintf("You are not permitted to logon this mode");
+	textcolor(15);
+	getch();
+	clrscr();
+	goto h;
+       }
+      if(strcmp(pass,password)==0)
+       {
+	char c;
+	do
+	 {
+	  clrscr();
+	  gotoxy(5,10);
+	  textcolor(9);
+	  cprintf("...........ADMINISTRATOR MENU...........");
+	  gotoxy(10,12);
+	  textcolor(8);
+	  cprintf("1.Create detail data base");
+	  gotoxy(10,13);
+	  textcolor(8);
+	  cprintf("2.Add details");
+	  gotoxy(10,14);
+	  textcolor(8);
+	  cprintf("3.Display details");
+	  gotoxy(10,15);
+	  textcolor(8);
+	  cprintf("4.Form scheduled train list");
+	  gotoxy(10,16);
+	  textcolor(8);
+	  cprintf("5.User management");
+	  gotoxy(10,17);
+	  textcolor(8);
+	  cprintf("6.Display passenger details");
+	  gotoxy(10,18);
+	  textcolor(8);
+	  cprintf("7.Display train details");
+	  gotoxy(10,19);
+	  textcolor(8);
+	  cprintf("8.Return to main menu");
+	  gotoxy(10,20);
+	  textcolor(9);
+	  cprintf("Enter your choice:");
+	  cin>>ch;
+	  clrscr();
+	  cout<<endl;
+	  switch(ch)
+	   {
+	    case 1:
+	     f.open("administrator.txt",ios::out|ios::binary);
+	     do
+	      {
+	       a.getdetail();
+	       f.write((char *) & a,sizeof(a));
+	       clrscr();
+	       gotoxy(10,10);
+	       textcolor(1);
+	       cprintf("Do you want to add one more record?");
+	       gotoxy(10,12);
+	       textcolor(1);
+	       cprintf("y-for Yes   or   n-for No :");
+	       textcolor(15);
+	       cin>>c;
+	      }while(c=='y');
+	     f.close();
+	     clrscr();
+	     break;
+
+	    case 2:
+	     f.open("administrator.txt",ios::in|ios::out|ios::binary|ios::app);
+	     a.getdetail();
+	     f.write((char *) & a,sizeof(a));
+	     f.close();
+	     break;
+
+	    case 3:
+	     f.open("administrator.txt",ios::in|ios::out|ios::binary|ios::app);
+	     f.seekg(0);
+	     gotoxy(5,5);
+	     textcolor(1);
+	     cprintf("enter the train no of which details you want to know :");
+	     cin>>no;
+	     while(f.read((char *) & a,sizeof(a)))
+	      {
+	       if(a.tno==no)
+		{
+		 a.displaydetail();
+		}
+	      }
+	     f.close();
+	     if(a.tno!=no)
+	      {
+	       textcolor(LIGHTBLUE);
+	       gotoxy(15,15);
+	       cprintf("sorry!!!! wrong train no.");
+	       textcolor(WHITE);
+	      }
+	     break;
+
+	    case 4:
+	     f.open("list.txt",ios::out|ios::binary);
+	     do
+	      {
+	       s.formlist();
+	       f.write((char *) & s,sizeof(s));
+	       clrscr();
+	       gotoxy(10,10);
+	       textcolor(1);
+	       cprintf("Do you want to add one more record?");
+	       gotoxy(10,12);
+	       textcolor(1);
+	       cprintf("y-for Yes   or   n-for No :");
+	       textcolor(15);
+	       cin>>c;
+	      }while(c=='y');
+	     f.close();
+	     break;
+
+	    case 5:
+	     manage();
+	     break;
+
+	    case 6:
+	     displaypassdetail();
+	     break;
+
+	    case 7:
+	     displaytraindetails();
+	     break;
+	    }
+	   }
+	   while(ch<=7);
+
+//	f.close();
+       }
+	h:
+     }
+
+//////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+     void user()
+      {
+       clrscr();
+       login a;
+       int ch;
+       gotoxy(10,10);
+       textcolor(BLINK + RED);
+       cprintf("*****************************************************");
+       cout<<"\n";
+       gotoxy(10,12);
+       textcolor(BLINK + LIGHTRED);
+       cprintf("***********WELCOME TO THE USER MENU*************");
+       cout<<"\n";
+       gotoxy(10,14);
+       textcolor(BLINK + RED);
+       cprintf("****************************************************");
+       cout<<"\n";
+       textcolor(WHITE);
+       char *password;
+       char id[100];
+       fstream f;
+       f.open("id.txt",ios::in|ios::out|ios::binary);
+       gotoxy(15,15);
+       textcolor(3);
+       cprintf("Enter your id:");
+       gets(id);
+       gotoxy(15,17);
+       textcolor(3);
+       cprintf("Enter your password:");
+       password=getpass(" ");
+       while(f.read((char *) & a,sizeof(a)))
+	{
+	 if((strcmp(a.id,id)==0)&&(strcmp(a.pass,password)==0))
+	  {
+	   do
+	    {
+	     clrscr();
+	     gotoxy(10,10);
+	     textcolor(2);
+	     cprintf("1.Reserve");
+	     gotoxy(10,12);
+	     textcolor(2);
+	     cprintf("2.Cancell");
+	     gotoxy(10,14);
+	     textcolor(2);
+	     cprintf("3.Enquiry");
+	     gotoxy(10,16);
+	     textcolor(2);
+	     cprintf("4.Return to the main menu");
+	     gotoxy(15,18);
+	     textcolor(3);
+	     cprintf("Enter your choice:");
+	     cin>>ch;
+	     textcolor(15);
+	     cout<<endl;
+	     clrscr();
+	     switch(ch)
+	      {
+	       case 1:
+	       reserve();
+	       break;
+
+	       case 2:
+	       cancell();
+	       break;
+
+	       case 3:
+	       enquiry();
+	       break;
+	      }
+	    }while(ch<=3);
+	   goto j;
+	  }
+	 else
+	  {
+	   d=1;
+	  }
+	}
+       if(d==1)
+	{
+	 clrscr();
+	 gotoxy(16,30);
+	 textcolor(YELLOW);
+	 cprintf("Enter your user id and password correctly");
+	}
+       getch();
+       j:
+
+      }
+
+///////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+
+    void reserve()
+     {
+      int ch;
+      do
+       {
+	clrscr();
+	gotoxy(10,10);
+	textcolor(5);
+	cprintf("1.Reserve in advance");
+	gotoxy(10,12);
+	textcolor(5);
+	cprintf("2.Reserve tatkal ticket");
+	gotoxy(10,14);
+	textcolor(5);
+	cprintf("3.Return to the main menu");
+	gotoxy(10,17);
+	textcolor(3);
+	cprintf("Enter your choice:");
+	cin>>ch;
+	cout<<endl;
+	switch(ch)
+	 {
+	  case 1:
+	  res();
+	  break;
+
+	  case 2:
+	  tatkal();
+	  break;
+	 }
+      }while(ch==2);
+	getch();
+     }
+
+
+/////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+
+    void res()
+     {
+      detail a;
+      reser b;
+      fstream f1,f2;
+      time_t t;
+      struct dosdate_t d;
+      _dos_getdate(&d);
+      ye=d.year;
+      da=d.day;
+      mo=d.month;
+      f1.open("administrator.txt",ios::in|ios::out|ios::binary);
+      f2.open("p.txt",ios::in|ios::out|ios::binary|ios::app);
+      int ch;
+      b.getresdet();
+      while(f1.read((char *) &a,sizeof(a)))
+	{
+	 if(a.tno==b.tno && strcmp(b.bp,a.bp)==0 && strcmp(b.dest,b.dest)==0)
+	  {
+	   if(strcmp(b.clas,f)==0)
+	     {
+	      if(a.c1>=b.nosr)
+		 {
+		  amt=a.c1fare;
+		  addr=f1.tellg();
+		  ad=sizeof(a.c1);
+		  f1.seekp(addr-(7*ad));
+		  a.c1=a.c1-b.nosr;
+		  f1.write((char *) & a.c1,sizeof(a.c1));
+		  for(i=0;i<b.nosr;i++)
+		  {
+		   if(b.con==1)
+		   {
+		    textcolor(7);
+		    cprintf("Concession category:MILITARY PERSONNEL");
+		    b.amc=(amt*50)/100;
+		   }
+		  else if(b.con==2)
+		   {
+		    textcolor(7);
+		    cprintf("Concession category:SENIOR CITIZEN");
+		    b.amc=(amt*60)/100;
+		   }
+		  else if(b.con==3)
+		   {
+		    textcolor(7);
+		    cprintf("Concession category:CHILDERN BELOW FIVE");
+		    b.amc=0;
+		   }
+		  else if(b.con==4)
+		   {
+		    textcolor(7);
+		    cprintf("You cannot get any concession");
+		    b.amc=amt;
+		   }
+		   }
+		  srand((unsigned) time(&t));
+		  b.pnr=rand();
+		  b.tin=rand();
+		  f2.write((char *) & b,sizeof(b));
+		  b.displayresdet();
+		 }
+	      else
+	       {
+		textcolor(10);
+		cprintf("**********Sorry req seats not available********");
+		getch();
+	       }
+	      }
+	     else if(strcmp(b.clas,s)==0)
+	     {
+	      if(a.c2>=b.nosr)
+	       {
+		amt=a.c2fare;
+		addr=f1.tellg();
+		ad=sizeof(a.c2);
+		f1.seekp(addr-(5*ad));
+		a.c2=a.c2-b.nosr;
+		f1.write((char *) & a.c2,sizeof(a.c2));
+		if(b.con==1)
+		 {
+		  textcolor(7);
+		  cprintf("Concession category:MILITARY PERSONNEL");
+		  b.amc=b.nosr*((amt*50)/100);
+		 }
+		else if(b.con==2)
+		 {
+		  textcolor(7);
+		  cprintf("Concession category:SENIOR CITIZEN");
+		  b.amc=b.nosr*((amt*60)/100);
+		 }
+	       else if(b.con==3)
+		{
+		 textcolor(7);
+		 cprintf("Concession category:CHILDERN BELOW FIVE");
+		 b.amc=0.0;
+		}
+	       else if(b.con==4)
+		{
+		 textcolor(7);
+		 cprintf("You cannot get any concession");
+		 b.amc=b.nosr*amt;
+		}
+	       srand((unsigned) time(&t));
+	       b.pnr=rand();
+	       b.tin=rand();
+	       f2.write((char *) & b,sizeof(b));
+	       b.displayresdet();
+	       }
+	     else
+	      {
+	       textcolor(10);
+	       cprintf("**********Sorry req seats not available********");
+	       getch();
+	      }
+
+	   }
+	   goto h;
+	 }
+	else
+	 {
+	  flag=0;
+	 }
+	}
+      if(flag==0)
+       {
+	gotoxy(10,20);
+	textcolor(12);
+	cprintf("............Wrong train no......................");
+	gotoxy(10,21);
+	textcolor(12);
+	cprintf("......Enter the train no from the data base.....");
+       }
+      f1.close();
+      f2.close();
+      getch();
+      clrscr();
+      h:
+     }
+
+/////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+
+    void tatkal()
+     {
+      detail a;
+      reser b;
+      fstream f1,f2;
+      time_t t;
+      struct dosdate_t d;
+      _dos_getdate(&d);
+      ye=d.year;
+      da=d.day;
+      mo=d.month;
+      f1.open("administrator.txt",ios::in|ios::out|ios::binary);
+      f2.open("p.txt",ios::in|ios::out|ios::binary|ios::app);
+      int ch;
+      b.getresdet();
+      while(f1.read((char *) &a,sizeof(a)))
+	{
+	 if(a.tno==b.tno && strcmp(b.bp,a.bp)==0 && strcmp(b.dest,b.dest)==0 && b.d-da<=2)
+	  {
+	   if(strcmp(b.clas,f)==0)
+	     {
+	      if(a.c1>=b.nosr)
+		 {
+		  amt=a.c1fare+150;
+		  addr=f1.tellg();
+		  ad=sizeof(a.c1);
+		  f1.seekp(addr-(7*ad));
+		  a.c1=a.c1-b.nosr;
+		  f1.write((char *) & a.c1,sizeof(a.c1));
+		  for(i=0;i<b.nosr;i++)
+		  {
+		   if(b.con==1)
+		   {
+		    textcolor(7);
+		    cprintf("Concession category:MILITARY PERSONNEL");
+		    b.amc=(amt*50)/100;
+		   }
+		  else if(b.con==2)
+		   {
+		    textcolor(7);
+		    cprintf("Concession category:SENIOR CITIZEN");
+		    b.amc=(amt*60)/100;
+		   }
+		  else if(b.con==3)
+		   {
+		    textcolor(7);
+		    cprintf("Concession category:CHILDERN BELOW FIVE");
+		    b.amc=0;
+		   }
+		  else if(b.con==4)
+		   {
+		    textcolor(7);
+		    cprintf("You cannot get any concession");
+		    b.amc=amt;
+		   }
+		   }
+		  srand((unsigned) time(&t));
+		  b.pnr=rand();
+		  b.tin=rand();
+		  f2.write((char *) & b,sizeof(b));
+		  b.displayresdet();
+		 }
+	      else
+	       {
+		textcolor(10);
+		cprintf("**********Sorry req seats not available********");
+		getch();
+	       }
+	      }
+	     else if(strcmp(b.clas,s)==0)
+	     {
+	      if(a.c2>=b.nosr)
+	       {
+		amt=a.c2fare+75;
+		addr=f1.tellg();
+		ad=sizeof(a.c2);
+		f1.seekp(addr-(5*ad));
+		a.c2=a.c2-b.nosr;
+		f1.write((char *) & a.c2,sizeof(a.c2));
+		if(b.con==1)
+		 {
+		  textcolor(7);
+		  cprintf("Concession category:MILITARY PERSONNEL");
+		  b.amc=b.nosr*((amt*50)/100);
+		 }
+		else if(b.con==2)
+		 {
+		  textcolor(7);
+		  cprintf("Concession category:SENIOR CITIZEN");
+		  b.amc=b.nosr*((amt*60)/100);
+		 }
+	       else if(b.con==3)
+		{
+		 textcolor(7);
+		 cprintf("Concession category:CHILDERN BELOW FIVE");
+		 b.amc=0.0;
+		}
+	       else if(b.con==4)
+		{
+		 textcolor(7);
+		 cprintf("You cannot get any concession");
+		 b.amc=b.nosr*amt;
+		}
+	       srand((unsigned) time(&t));
+	       b.pnr=rand();
+	       b.tin=rand();
+	       f2.write((char *) & b,sizeof(b));
+	       b.displayresdet();
+	       }
+	     else
+	      {
+	       textcolor(10);
+	       cprintf("**********Sorry req seats not available********");
+	       getch();
+	      }
+
+	   }
+	   goto h;
+	 }
+	else
+	 {
+	  flag=0;
+	 }
+	}
+      if((b.d-da)<=2)
+       {
+	gotoxy(10,20);
+	textcolor(12);
+	cprintf("............Tatkal ticket cannot be issued now......................");
+       }
+      f1.close();
+      f2.close();
+      getch();
+      clrscr();
+      h:
+     }
+
+
+
+//////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+    void displaypassdetail()
+     {
+      clrscr();
+      fstream f;
+      reser b;
+      f.open("p.txt",ios::in|ios::out|ios::binary);
+      f.seekg(0);
+      gotoxy(10,10);
+      textcolor(6);
+      cprintf("enter the pnr number: ");
+      cin>>pnr_no;
+      while(f.read((char *) & b,sizeof(b)))
+       {
+	if(b.pnr==pnr_no)
+	 {
+	  b.displayresdet();
+	 }
+       if(b.pnr!=pnr_no)
+	{
+	 gotoxy(10,12);
+	 textcolor(6);
+	 cprintf("sorry!! wrong pnr number ");
+	}
+      }
+     f.close();
+     getch();
+    }
+
+////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+    void displaytraindetails()
+     {
+      fstream f;
+      f.open("administrator.txt",ios::in|ios::out|ios::binary);
+      detail a;
+      clrscr();
+      gotoxy(5,5);
+      textcolor(1);
+      cprintf("enter the train no.: ");
+      cin>>no;
+      gotoxy(5,7);
+      textcolor(1);
+      cprintf("enter the date of the journey:");
+      cin>>d;
+      gotoxy(38,7);
+      cin>>m;
+      cprintf(" : ");
+      gotoxy(41,7);
+      cin>>y;
+      clrscr();
+      while(f.read((char *) & a,sizeof(a)))
+       {
+	if(a.tno==no)
+	    {
+	     a.displaydetail();
+	    }
+       }
+
+     }
+
+//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+
+    void enquiry()
+     {
+      int ch;
+      clrscr();
+      gotoxy(5,5);
+      textcolor(13);
+      cprintf("1.PNR status");
+      gotoxy(5,7);
+      textcolor(13);
+      cprintf("2.Train list from detail base");
+      gotoxy(5,9);
+      textcolor(13);
+      cprintf("enter your choice");
+      cin>>ch;
+      fstream f,f1,f2;
+      clrscr();
+      switch(ch)
+       {
+	case 1:
+	 reser b;
+	 canc c;
+	 f.open("p.txt",ios::in|ios::out|ios::binary);
+	 f1.open("cn.txt",ios::in|ios::out|ios::binary);
+	 f.seekg(0);
+	 f1.seekg(0);
+	 gotoxy(5,5);
+	 textcolor(10);
+	 cprintf("enter the PNR no.: ");
+	 cin>>pnr_no;
+	 while(f1.read((char *) &c ,sizeof(c)))
+	  {
+	   if(pnr_no==c.pnr)
+	    {
+	     gotoxy(5,10);
+	     textcolor(6);
+	     cprintf("This ticket has been already cancelled");
+	     getch();
+	    }
+
+	   else
+	    while(f.read((char *) &b ,sizeof(b)))
+	     {
+	      if(pnr_no==b.pnr)
+	       {
+		 b.displayresdet();
+	       }
+
+	     }
+	  }
+	  break;
+
+       case 2:
+	schedule s;
+	f2.open("list.txt",ios::in|ios::out|ios::binary);
+	gotoxy(2,2);
+	textcolor(BLINK+LIGHTGREEN);
+	cprintf("!!!!!!!!!!! the trains list from base!!!!!!!!!!");
+	textcolor(WHITE);
+	f2.seekg(0);
+	while(f2.read((char *) & s,sizeof(s)))
+	 {
+	  s.showlist();
+	  getch();
+	 }
+
+	break;
+    }
+    f.close();
+    f1.close();
+    f2.close();
+   }
+
+/////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+
+    void cancell()
+     {
+      detail a;
+      reser b;
+      canc c;
+      fstream f1,f2,f3;
+      clrscr();
+      f1.open("administrator.txt",ios::in|ios::out|ios::binary);
+      f2.open("p.txt",ios::in|ios::out|ios::binary);
+      f3.open("cn.txt",ios::in|ios::out|ios::binary);
+      gotoxy(2,5);
+      textcolor(YELLOW + BLINK);
+      cprintf("**********CANCELLATION MENU*************");
+      c.getcancdet();
+      while(f2.read((char *) & b,sizeof(b)))
+       {
+	if(b.pnr==c.pnr)
+	 {
+	  c.tno=b.tno;
+	  strcpy(c.tname,b.tname);
+	  strcpy(c.bp,b.bp);
+	  strcpy(c.dest,b.dest);
+	  c.nosc=b.nosr;
+	  for(int j=0;j<c.nosc;j++)
+	   {
+	    strcpy(c.pname[j],b.pname[j]);
+	    c.age[j]=b.age[j];
+	    strcpy(c.sex[j],b.sex[j]);
+	   }
+	  strcpy(c.clas,b.clas);
+	  if(strcmp(c.clas,f)==0)
+	   {
+	    while(f1.read((char *) & a,sizeof(a)))
+	     {
+	      if(a.tno==c.tno)
+	       {
+		a.c1=a.c1+c.nosc;
+		d=a.d;
+		m=a.m;
+		addr=f1.tellg();
+		ad=sizeof(a.c1);
+		f1.seekp(addr-(7*ad));
+		f1.write((char *) & a.c1,sizeof(a.c1));
+		tamt=b.amc;
+		if((c.d==d)&&(c.m==m))
+		 {
+		  cout<<"You are cancelling at the date of departure\n";
+		  c.amr=tamt-((tamt*60)/100);
+		 }
+		else if(c.m==m)
+		 {
+		  cout<<"You are cancelling at the month of departure\n";
+		  c.amr=tamt-((tamt*50)/100);
+		 }
+		else if(m>c.m)
+		 {
+		  cout<<"You are cancelling one month before the date of departure\n";
+		  c.amr=tamt-((tamt*20)/100);
+		 }
+		else
+		 {
+		  cout<<"Cancelling after the departure\n";
+		  cout<<"Your request cannot be completed\n";
+		 }
+		f3.write((char*)&c,sizeof(c));
+		c.displaycancdet();
+		goto h;
+	       }
+	      }
+	     }
+	   else if(strcmp(c.clas,s)==0)
+	    {
+	     while(f1.read((char *) & a,sizeof(a)))
+	      {
+	       if(a.tno==c.tno)
+		{
+		 a.c2=a.c2+c.nosc;
+		 d=a.d;
+		 m=a.m;
+		 addr=f1.tellg();
+		 ad=sizeof(a.c2);
+		 f1.seekp(addr-(5*ad));
+		 f1.write((char *) & a.c2,sizeof(a.c2));
+		 tamt=b.amc;
+		 if((c.d==d)&&(c.m==m))
+		  {
+		   cout<<"You are cancelling at the date of departure\n";
+		   c.amr=tamt-((tamt*60)/100);
+		  }
+		 else if(c.m==m)
+		  {
+		   cout<<"You are cancelling at the month of departure\n";
+		   c.amr=tamt-((tamt*50)/100);
+		  }
+		 else if(m>c.m)
+		  {
+		   cout<<"You are cancelling one month before the date of departure\n";
+		   c.amr=tamt-((tamt*20)/100);
+		  }
+		 else
+		  {
+		   cout<<"Cancelling after the departure\n";
+		   cout<<"Your request cannot be completed\n";
+		  }
+		  f3.write((char*)&c,sizeof(c));
+		  c.displaycancdet();
+		  goto h;
+		}
+	      }
+	     }
+	  }
+	 else
+	  {
+	   flag=0;
+	  }
+	}
+       h:
+       if(flag!=0)
+	{
+	 cout<<"Enter the correct pnr no\n";
+	}
+       getch();
+       f1.close();
+       f2.close();
+       f3.close();
+
+      }
+
+///////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
+     void can()
+      {
+       int ch;
+       clrscr();
+
+       do
+	{
+	 gotoxy(2,5);
+	 textcolor(7 + BLINK);
+	 cprintf(".................CANCELLATION MENU...............");
+	 gotoxy(5,7);
+	 textcolor(8);
+	 cprintf("1.Cancell");
+	 gotoxy(5,9);
+	 textcolor(8);
+	 cprintf("2.Return to the main menu");
+	 gotoxy(5,11);
+	 textcolor(8);
+	 cprintf("Enter your choice:");
+	 cin>>ch;
+	 cout<<endl;
+	 switch(ch)
+	  {
+	   case 1:
+	   cancell();
+	   break;
+	  }
+	}while(ch==1);
+       getch();
+      }
+
+///////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+
+     void manage()
+      {
+       int ch;
+       fstream f;
+       char c;
+       login a;
+       clrscr();
+       gotoxy(5,5);
+       textcolor(BLINK+GREEN);
+       cprintf(".......WELCOME TO THE USER MANAGEMENT MENU........");
+       textcolor(WHITE);
+       do
+	{
+	 gotoxy(10,7);
+	 textcolor(3);
+	 cprintf("1.Create id data base");
+	 gotoxy(10,9);
+	 textcolor(3);
+	 cprintf("2.Add details");
+	 gotoxy(10,11);
+	 textcolor(3);
+	 cprintf("3.Display details");
+	 gotoxy(10,13);
+	 textcolor(3);
+	 cprintf("4.Return to the main menu");
+	 gotoxy(10,15);
+	 textcolor(3);
+	 cprintf("Enter your choice:");
+	 cin>>ch;
+	 cout<<endl;
+	 switch(ch)
+	  {
+	   case 1:
+	   f.open("id.txt",ios::out|ios::binary);
+	   do
+	    {
+	     clrscr();
+	     a.getid();
+	     f.write((char *) & a,sizeof(a));
+	     clrscr();
+	     gotoxy(10,10);
+	     textcolor(1);
+	     cprintf("Do you want to add one more record?");
+	     gotoxy(10,12);
+	     textcolor(1);
+	     cprintf("y-for Yes   or   n-for No :");
+	     textcolor(15);
+	     cin>>c;
+	    }while(c=='y');
+	   f.close();
+	   clrscr();
+	   break;
+
+	   case 2:
+	   f.open("id.txt",ios::in|ios::out|ios::binary|ios::app);
+	   a.getid();
+	   f.write((char *) & a,sizeof(a));
+	   f.close();
+	   clrscr();
+	   break;
+
+	   case 3:
+	   f.open("id.txt",ios::in|ios::out|ios::binary);
+	   f.seekg(0);
+	   while(f.read((char *) & a,sizeof(a)))
+	    {
+	     a.displayid();
+	     getch();
+	    }
+	   f.close();
+	   clrscr();
+	   break;
+	  }
+	 }while(ch<=3);
+	}
+
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+
+   void ticket()
+    {
+     int gd=DETECT,gm;
+     initgraph(& gd,& gm,"C:\\TC\\BGI");
+     cleardevice();
+
+     setcolor(GREEN);
+     rectangle(82,12,598,58);
+     delay(1500);
+
+     setcolor(LIGHTGREEN);
+     rectangle(80,10,600,60);
+     delay(1500);
+
+     setcolor(RED);
+     rectangle(78,8,602,62);
+     setcolor(14);
+
+     settextstyle(4,0,3);
+     outtextxy(123,12,"your ticket has been reserved successfully");
+     delay(2000);
+
+     setcolor(15);
+     settextstyle(0,0,0);
+
+     rectangle(125,125,514,354);
+     setfillstyle(1,12);
+     floodfill(151,151,15);
+     setcolor(0);
+     for(int i=133;i<347;i+=15)
+      {
+       circle(133,i,3);
+       setfillstyle(1,15);
+       floodfill(134,i+1,0);
+      }
+     for( i=133;i<347;i+=15)
+      {
+       circle(507,i,3);
+       setfillstyle(1,15);
+       floodfill(508,i+1,0);
+      }
+     rectangle(150,150,489,329);
+     line(150,165,489,165);
+     setfillstyle(1,0);
+     floodfill(169,158,0);
+     setcolor(15);
+     outtextxy(380,154,"HAPPY JOURNEY");
+     circle(320,158,10);
+     circle(320,158,7);
+     setfillstyle(1,12);
+     floodfill(328,160,15);
+     setcolor(15);
+     circle(320,156,3);
+     line(315,162,326,162);
+     line(314,160,327,160);
+     setcolor(0);
+     line(150,184,489,184);
+     line(150,196,489,196);
+     rectangle(150,196,192,209);
+     line(150,226,489,226);
+     line(150,239,489,239);
+     outtextxy(156,171,"PNR.NO");
+     outtextxy(218,171,"TRN NO.");
+     outtextxy(310,171,"DATE");
+     outtextxy(370,171,"ADULTS");
+     outtextxy(430,171,"CHILD");
+     outtextxy(152,200,"class");
+     outtextxy(219,200,"Journey cum reservation ticket");
+     outtextxy(153,231,"coach");
+     outtextxy(202,231,"berth");
+     outtextxy(246,231,"sex");
+     outtextxy(281,231,"age");
+     outtextxy(327,231,"conc");
+     outtextxy(369,231,"t.auth");
+     outtextxy(423,231,"totcash");
+     outtextxy(301,314,"ticket no.");
+     outtextxy(340,280,"booked on:");
+
+    }
+
+
+/////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
